@@ -1,0 +1,45 @@
+# for now only a test appset for common ns-es
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: helm-cluster-config
+  namespace: argocd-admin
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          env: "new-test"
+      values:
+        valuesFile: "new-test.yaml"
+        targetRevision: "master"
+  template:
+    metadata:
+      name: '{{name}}-helm-cluster-config'
+    spec:
+      project: default
+      syncPolicy:
+        retry:
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
+          limit: 5
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+      source:
+        repoURL: 'XXX'
+        targetRevision: '{{values.targetRevision}}'
+        path: 'cluster-config'
+        helm:
+          valueFiles:
+          - 'cluster-values/{{values.valuesFile}}'
+          - 'values.yaml'
+          version: v3
+      destination:
+        server: '{{server}}'
+        namespace: argocd-admin
