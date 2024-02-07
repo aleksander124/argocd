@@ -1,25 +1,63 @@
+# Values shared between all clusters
+
 clusterRoles:
-- name: administrator
-  rules:
-    - apiGroups:
-      - "*"
-      resources:
-      - "*"
-      verbs:
-      - "*"
-- name: monitoring-software
-  rules:
-    - apiGroups:
-      - "*"
-      resources:
-      - pods
-      - nodes
-      - deployments
-      - apiservices
-      - componentstatuses
-      - namespaces
-      - horizontalpodautoscalers
-      verbs:
-      - get
-      - list
-      - watch
+  - name: administrator
+    rules:
+      - apiGroups:
+          - "*"
+        resources:
+          - "*"
+        verbs:
+          - "*"
+  - name: user
+    rules:
+      - apiGroups:
+          - "*"
+        resources:
+          - "namespaces"
+          - "resourcequotas"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
+  - name: on-duty
+    rules:
+      - apiGroups:
+          - "*"
+        resources:
+          - "*"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
+  - name: ado-sc-creator
+    rules:
+      - apiGroups:
+          - ""
+        resources:
+          - "configmaps"
+          - "namespaces"
+          - "secrets"
+        verbs:
+          - "list"
+          - "get"
+  - name: monitoring-software
+    rules:
+      - apiGroups:
+          - "*"
+        resources:
+          - pods
+          - nodes
+          - deployments
+          - apiservices
+          - componentstatuses
+          - namespaces
+          - horizontalpodautoscalers
+        verbs:
+          - get
+          - list
+          - watch
+
+adoServiceConnectionCreator:
+  namespace: devops-ado-sc-creator
+  serviceAccount: ado-sc-creator
