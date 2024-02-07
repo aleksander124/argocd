@@ -1,0 +1,18 @@
+{{ range $path, $_ :=  $.Files.Glob  (printf "ns-spec/**.yaml" ) }}
+{{ $ns := ($.Files.Get $path ) | fromYaml }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $ns.name }}
+  {{- if $ns.labels }}
+  labels:
+    {{- with $ns.labels }}
+    {{- toYaml .  | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+    helm.sh/hook-weight: "10"
+{{- end }}
+
