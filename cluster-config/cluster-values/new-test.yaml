@@ -1,0 +1,7 @@
+users:
+- name: "user1"
+  clusterRole: "administrator"
+- name: "user2"
+  clusterRole: "administrator"
+- name: "user3"
+  clusterRole: "administrator"

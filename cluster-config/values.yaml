@@ -1,0 +1,25 @@
+clusterRoles:
+- name: administrator
+  rules:
+    - apiGroups:
+      - "*"
+      resources:
+      - "*"
+      verbs:
+      - "*"
+- name: monitoring-software
+  rules:
+    - apiGroups:
+      - "*"
+      resources:
+      - pods
+      - nodes
+      - deployments
+      - apiservices
+      - componentstatuses
+      - namespaces
+      - horizontalpodautoscalers
+      verbs:
+      - get
+      - list
+      - watch
